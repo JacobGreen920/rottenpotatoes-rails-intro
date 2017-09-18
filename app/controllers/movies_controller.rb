@@ -11,7 +11,6 @@ class MoviesController < ApplicationController
   end
 
   def index
-    byebug
     if params[:sort_by_title] == true
       @movies = Movie.order params[:title]
     elsif params[:sort_by_release] == true
