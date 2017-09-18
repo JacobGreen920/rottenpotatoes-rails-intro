@@ -1,7 +1,7 @@
 class MoviesController < ApplicationController
 
   def movie_params
-    params.require(:movie).permit(:title, :rating, :description, :release_date)
+    params.require(:movie).permit(:title, :rating, :description, :release_date, :sort_by_title, :sort_by_release)
   end
   
   def show
@@ -17,6 +17,7 @@ class MoviesController < ApplicationController
     elsif params[:sort_by_release] == true
       @movies = Movie.order params[:release_date]
     else
+      flash[:notice] = "Didn't actually sort anything!"
       @movies = Movie.all
     end
   end
