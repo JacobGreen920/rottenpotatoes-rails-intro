@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
   end
 
   def index
-    flash[:notice] = "#{:sort_by_title}"
+    byebug
     if params[:sort_by_title] == true
       @movies = Movie.order params[:title]
     elsif params[:sort_by_release] == true
