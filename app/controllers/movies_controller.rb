@@ -14,6 +14,13 @@ class MoviesController < ApplicationController
     @sort = params[:sort]
     @title_header = nil
     @release_date_header = nil
+    @movies = Movie.all
+    @all_ratings = Movie.ratings
+    if params[:ratings] == nil
+      @permitted_ratings = Movie.ratings
+    else
+      @permitted_ratings = params[:ratings].keys
+    end
     if @sort == "Title"
       @movies = Movie.order :title
       @title_header = "hilite"
@@ -21,7 +28,7 @@ class MoviesController < ApplicationController
       @movies = Movie.order :release_date
       @release_date_header = "hilite"
     else
-      @movies = Movie.all
+      @movies = Movie.where(rating: @permitted_ratings)
     end
   end
   
