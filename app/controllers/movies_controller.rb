@@ -11,25 +11,40 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @sort = params[:sort]
+    if params[:sort] != nil
+      session[:sort] = params[:sort]
+    end
+    if params[:ratings] != nil
+      session[:ratings] = params[:ratings]
+    end
+    @sort = session[:sort]
     @title_header = nil
     @release_date_header = nil
     @movies = Movie.all
     @all_ratings = Movie.ratings
-    if params[:ratings] == nil
+    if session[:ratings] == nil
       @permitted_ratings = Movie.ratings
     else
-      @permitted_ratings = params[:ratings].keys
+      @permitted_ratings = session[:ratings].keys
     end
     if @sort == "Title"
-      @movies = Movie.order :title
+      @movies = Movie.where(rating: @permitted_ratings).order :title
       @title_header = "hilite"
     elsif @sort == "Release Date"
-      @movies = Movie.order :release_date
+      @movies = Movie.where(rating: @permitted_ratings).order :release_date
       @release_date_header = "hilite"
     else
       @movies = Movie.where(rating: @permitted_ratings)
     end
+    @all_checks = []
+    @all_ratings.each { |rating|
+      if @permitted_ratings.include? rating
+        @all_checks.append(true)
+      else
+        @all_checks.append(false)
+      end
+    }
+    @outputs = @all_ratings.zip(@all_checks)
   end
   
   def new
