@@ -9,14 +9,20 @@ class MoviesController < ApplicationController
     @movie = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
+  
+  def sort
+    params[:ratings] = session[:ratings]
+    session[:sort] = params[:sort]
+    redirect_to movies_path
+  end
+  
+  def filter
+    params[:sort] = session[:sort]
+    session[:ratings] = params[:ratings]
+    redirect_to movies_path
+  end
 
   def index
-    if params[:sort] != nil
-      session[:sort] = params[:sort]
-    end
-    if params[:ratings] != nil
-      session[:ratings] = params[:ratings]
-    end
     @sort = session[:sort]
     @title_header = nil
     @release_date_header = nil
