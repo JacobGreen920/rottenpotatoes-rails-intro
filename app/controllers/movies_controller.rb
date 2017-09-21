@@ -11,17 +11,16 @@ class MoviesController < ApplicationController
   end
   
   def sort
-    params[:ratings] = session[:ratings]
     session[:sort] = params[:sort]
     flash.keep
-    redirect_to movies_path
+    redirect_to movies_path(:ratings => session[:ratings], :sort => session[:sort])
   end
   
   def filter
-    params[:sort] = session[:sort]
+    params[:movie][:sort] = session[:sort]
     session[:ratings] = params[:ratings]
     flash.keep
-    redirect_to movies_path
+    redirect_to movies_path(:ratings => session[:ratings], :sort => session[:sort])
   end
 
   def index
