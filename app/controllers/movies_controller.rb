@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
       params[:sort] = session[:sort]
       redir = true
     end
-    unless params[:ratings] == nil
+    unless params.key?(:ratings)
       params[:ratings] = session[:ratings]
       redir = true
     end
