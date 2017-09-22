@@ -16,17 +16,13 @@ class MoviesController < ApplicationController
     @all_ratings = Movie.ratings
     unless params.key?(:sort)
       params[:sort] = session[:sort]
-      if params[:sort] == nil
-        params[:sort] = false
-      else
+      unless params[:sort] == nil
         redir = true
       end
     end
     unless params.key?(:ratings)
       params[:ratings] = session[:ratings]
-      if params[:ratings] == nil
-        params[:ratings] = @all_ratings
-      else
+      unless params[:ratings] == nil
         redir = true
       end
     end
