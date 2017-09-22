@@ -10,20 +10,22 @@ class MoviesController < ApplicationController
     # will render app/views/movies/show.<extension> by default
   end
   
-  def sort
-    session[:sort] = params[:sort]
-    flash.keep
-    redirect_to movies_path(:ratings => session[:ratings], :sort => session[:sort])
-  end
-  
-  def filter
-    params[:movie][:sort] = session[:sort]
-    session[:ratings] = params[:ratings]
-    flash.keep
-    redirect_to movies_path(:ratings => session[:ratings], :sort => session[:sort])
-  end
-
   def index
+    red = false
+    if params[:sort] == nil
+      params[:sort] = session[:sort]
+      red = true
+    end
+    if params[:ratings] == nil
+      params[:ratings] = session[:ratings]
+      red = true
+    end
+    if red
+      redirect_to movies_path(params)
+      return
+    end
+    session[:sort] = params[:sort]
+    session[:ratings] = params[:ratings]
     @sort = session[:sort]
     @title_header = nil
     @release_date_header = nil
