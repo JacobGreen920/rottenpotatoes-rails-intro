@@ -12,13 +12,23 @@ class MoviesController < ApplicationController
   
   def index
     redir = false
+    @movies = Movie.all
+    @all_ratings = Movie.ratings
     unless params.key?(:sort)
       params[:sort] = session[:sort]
-      redir = true
+      if params[:sort] == nil
+        params[:sort] = false
+      else
+        redir = true
+      end
     end
     unless params.key?(:ratings)
       params[:ratings] = session[:ratings]
-      redir = true
+      if params[:ratings] == nil
+        params[:ratings] = @all_ratings
+      else
+        redir = true
+      end
     end
     if redir
       redirect_to movies_path(params)
@@ -29,8 +39,6 @@ class MoviesController < ApplicationController
     @sort = session[:sort]
     @title_header = nil
     @release_date_header = nil
-    @movies = Movie.all
-    @all_ratings = Movie.ratings
     if session[:ratings] == nil
       @permitted_ratings = Movie.ratings
     else
