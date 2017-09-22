@@ -11,14 +11,16 @@ class MoviesController < ApplicationController
   end
   
   def index
-    if params[:sort] == nil
+    redir = false
+    unless params.key?(:sort)
       params[:sort] = session[:sort]
+      redir = true
     end
-    if params[:ratings] == nil
+    unless params[:ratings] == nil
       params[:ratings] = session[:ratings]
+      redir = true
     end
-    if params[:redir]
-      params[:redir] = false
+    if redir
       redirect_to movies_path(params)
       return
     end
